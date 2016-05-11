@@ -45,6 +45,30 @@ bool MainScene::init()
     ui::Helper::doLayout(rootNode);
     
     addChild(rootNode);
- 
+    
+    auto back = rootNode->getChildByName("back");
+    this->character = back->getChildByName<Character*>("character");
     return true;
+}
+
+void MainScene::onEnter()
+{
+    Layer::onEnter();
+    
+    setupTouchHandling();
+}
+
+void MainScene::setupTouchHandling()
+{
+    auto touchListener = EventListenerTouchOneByOne::create();
+    
+    touchListener->onTouchBegan = [&](Touch* touch, Event* event)
+    {
+        this->character->jump();
+        return true;
+    };
+    
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
+
+
 }

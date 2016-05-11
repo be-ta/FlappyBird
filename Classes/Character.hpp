@@ -20,9 +20,16 @@ public:
         
     bool init() override;
     void onExit() override;
+    void update( float dt  ) override;
+    void onEnter() override;
+    void jump();
     
 protected:
+    
     cocostudio::timeline::ActionTimeline* timeline;
+
+    float velocity;
+    float accel;
     
 };
 
