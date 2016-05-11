@@ -2,6 +2,9 @@
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 
+#include "Character.hpp"
+#include "CharacterReader.hpp"
+
 USING_NS_CC;
 
 using namespace cocostudio::timeline;
@@ -31,14 +34,17 @@ bool MainScene::init()
         return false;
     }
     
+    CSLoader* instance = CSLoader::getInstance();
+    instance->registReaderObject("CharacterReader", (ObjectFactory::Instance) CharacterReader::getInstance);
+    
     auto rootNode = CSLoader::createNode("MainScene.csb");
     
     //Cocosのバグ修正のために以下の３行を追加
     Size size = Director::getInstance()->getVisibleSize();
     rootNode->setContentSize(size);
     ui::Helper::doLayout(rootNode);
-
+    
     addChild(rootNode);
-
+ 
     return true;
 }
