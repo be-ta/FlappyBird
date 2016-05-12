@@ -5,6 +5,11 @@
 #include "Character.hpp"
 #include "CharacterReader.hpp"
 
+#include "Obstacle.hpp"
+#include "ObstacleReader.hpp"
+
+#include "Constants.h"
+
 USING_NS_CC;
 
 using namespace cocostudio::timeline;
@@ -36,6 +41,7 @@ bool MainScene::init()
     
     CSLoader* instance = CSLoader::getInstance();
     instance->registReaderObject("CharacterReader", (ObjectFactory::Instance) CharacterReader::getInstance);
+    instance->registReaderObject("ObstacleReader", (ObjectFactory::Instance) ObstacleReader::getInstance);
     
     auto rootNode = CSLoader::createNode("MainScene.csb");
     
@@ -46,8 +52,13 @@ bool MainScene::init()
     
     addChild(rootNode);
     
-    auto back = rootNode->getChildByName("back");
+    this->back = rootNode->getChildByName("back");
     this->character = back->getChildByName<Character*>("character");
+    
+    this->character->setLocalZOrder(1);
+    auto ground = this->back->getChildByName("ground");
+    ground->setLocalZOrder(1);
+    
     return true;
 }
 
@@ -56,6 +67,11 @@ void MainScene::onEnter()
     Layer::onEnter();
     
     setupTouchHandling();
+    
+    this->scheduleUpdate();
+    
+    this->schedule(CC_SCHEDULE_SELECTOR(MainScene::createObstacle), OBSTACLE_TIME_SPAN);
+    //this->unschedule(CC_SCHEDULE_SELECTOR(HelloWorld::step));
 }
 
 void MainScene::setupTouchHandling()
@@ -70,5 +86,27 @@ void MainScene::setupTouchHandling()
     
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
 
+}
 
+void MainScene::update(float dt)
+{
+    for( auto obstacle : this->obstacles ){
+        obstacle->moveLeft( SCROLL_SPEED_X * dt );
+    }
+}
+
+void MainScene::createObstacle( float dt )
+{
+    Obstacle* obstacle = dynamic_cast<Obstacle*>(CSLoader::createNode("Obstacle.csb"));
+    this->obstacles.pushBack( obstacle );
+    this->back->addChild( obstacle );
+    
+    float obstacleY = ( OBSTACLE_MAX_Y - OBSTACLE_MIN_Y ) * CCRANDOM_0_1() + OBSTACLE_MIN_Y;
+    obstacle->setPosition( Vec2( OBSTACLE_INIT_X, obstacleY ) );
+    
+    if( this->obstacles.size() > OBSTACLE_LIMIT )
+    {
+        this->obstacles.front()->removeFromParent();
+        this->obstacles.erase(this->obstacles.begin());
+    }
 }

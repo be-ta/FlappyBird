@@ -56,6 +56,10 @@
 		A85814A01CE332BB00D10026 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A858149D1CE332BB00D10026 /* Character.cpp */; };
 		A85814A31CE3331A00D10026 /* CharacterReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814A11CE3331A00D10026 /* CharacterReader.cpp */; };
 		A85814A41CE3331A00D10026 /* CharacterReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814A11CE3331A00D10026 /* CharacterReader.cpp */; };
+		A85814A81CE4126100D10026 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814A61CE4126100D10026 /* Obstacle.cpp */; };
+		A85814A91CE4126100D10026 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814A61CE4126100D10026 /* Obstacle.cpp */; };
+		A85814AC1CE4127100D10026 /* ObstacleReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814AA1CE4127100D10026 /* ObstacleReader.cpp */; };
+		A85814AD1CE4127100D10026 /* ObstacleReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A85814AA1CE4127100D10026 /* ObstacleReader.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -120,6 +124,11 @@
 		A858149E1CE332BB00D10026 /* Character.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Character.hpp; sourceTree = "<group>"; };
 		A85814A11CE3331A00D10026 /* CharacterReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterReader.cpp; sourceTree = "<group>"; };
 		A85814A21CE3331A00D10026 /* CharacterReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CharacterReader.hpp; sourceTree = "<group>"; };
+		A85814A51CE40F0400D10026 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		A85814A61CE4126100D10026 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Obstacle.cpp; sourceTree = "<group>"; };
+		A85814A71CE4126100D10026 /* Obstacle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Obstacle.hpp; sourceTree = "<group>"; };
+		A85814AA1CE4127100D10026 /* ObstacleReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObstacleReader.cpp; sourceTree = "<group>"; };
+		A85814AB1CE4127100D10026 /* ObstacleReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObstacleReader.hpp; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -259,6 +268,11 @@
 				46880B8719C43A87006E1F66 /* MainScene.h */,
 				A858149D1CE332BB00D10026 /* Character.cpp */,
 				A858149E1CE332BB00D10026 /* Character.hpp */,
+				A85814A51CE40F0400D10026 /* Constants.h */,
+				A85814A61CE4126100D10026 /* Obstacle.cpp */,
+				A85814A71CE4126100D10026 /* Obstacle.hpp */,
+				A85814AA1CE4127100D10026 /* ObstacleReader.cpp */,
+				A85814AB1CE4127100D10026 /* ObstacleReader.hpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -436,7 +450,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A85814A31CE3331A00D10026 /* CharacterReader.cpp in Sources */,
+				A85814AC1CE4127100D10026 /* ObstacleReader.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				A85814A81CE4126100D10026 /* Obstacle.cpp in Sources */,
 				46880B8A19C43A87006E1F66 /* MainScene.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				A858149F1CE332BB00D10026 /* Character.cpp in Sources */,
@@ -450,7 +466,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				A85814AD1CE4127100D10026 /* ObstacleReader.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				A85814A91CE4126100D10026 /* Obstacle.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* MainScene.cpp in Sources */,
 				A85814A41CE3331A00D10026 /* CharacterReader.cpp in Sources */,
 				A85814A01CE332BB00D10026 /* Character.cpp in Sources */,

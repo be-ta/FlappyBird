@@ -8,9 +8,9 @@
 
 #include "cocos2d.h"
 #include "Character.hpp"
+#include "Constants.h"
 
 USING_NS_CC;
-
 
 bool Character::init()
 {
@@ -24,7 +24,7 @@ bool Character::init()
     this->timeline->retain();
     
     this->velocity = 0.0f;
-    this->accel = -2000.0f;
+    this->accel = GRAVITY_ACCEL;
     
     return true;
 }
@@ -51,15 +51,15 @@ void Character::update( float dt )
     this->velocity += this->accel * dt;
     
     if( this->velocity > 0 ){
-        this->accel = -6000.0f;
+        this->accel = GRAVITY_ACCEL * 3.0f;
     }
     else
     {
-        this->accel = -2000.0f;
+        this->accel = GRAVITY_ACCEL;
     }
     
-    if( this->velocity < -2000.0f ){
-        this->velocity = -2000.0f;
+    if( this->velocity < -1.0f * JUMP_SPEED ){
+        this->velocity = -1.0f * JUMP_SPEED;
     }
     
     this->setPosition( this->getPosition() + Vec2(0, this->velocity * dt) );
@@ -67,7 +67,7 @@ void Character::update( float dt )
 
 void Character::jump()
 {
-    this->velocity = 1000.0f;
+    this->velocity = JUMP_SPEED;
 }
 
 
