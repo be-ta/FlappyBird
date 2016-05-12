@@ -104,6 +104,8 @@ void MainScene::update(float dt)
             if( characterRect.intersectsRect( obstacleRect ) != false )
             {
                   //this->unschedule(CC_SCHEDULE_SELECTOR(HelloWorld::step));
+                this->unscheduleUpdate();
+                this->unscheduleAllCallbacks();
             }
         }
     }
