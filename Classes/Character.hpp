@@ -24,6 +24,9 @@ public:
     void onEnter() override;
     void jump();
     cocos2d::Rect getRect();
+    void setIsPlaying( bool bPlay );
+    void startFly();
+    void stopFly();
     
 protected:
     
@@ -31,6 +34,7 @@ protected:
 
     float velocity;
     float accel;
+    bool  isPlaying;
     
 };
 

@@ -56,8 +56,16 @@ bool MainScene::init()
     this->character = back->getChildByName<Character*>("character");
     
     this->character->setLocalZOrder(1);
-    auto ground = this->back->getChildByName("ground");
+    auto ground = this->back->getChildByName<Sprite*>("ground");
     ground->setLocalZOrder(1);
+    
+    auto ground2 = this->back->getChildByName<Sprite*>("ground2");
+    ground2->setLocalZOrder(1);
+    
+    this->grounds.pushBack( ground );
+    this->grounds.pushBack( ground2 );
+    
+    this->state = GameState::Ready;
     
     return true;
 }
@@ -68,9 +76,7 @@ void MainScene::onEnter()
     
     setupTouchHandling();
     
-    this->scheduleUpdate();
-    
-    this->schedule(CC_SCHEDULE_SELECTOR(MainScene::createObstacle), OBSTACLE_TIME_SPAN);
+    triggerReady();
 }
 
 void MainScene::setupTouchHandling()
@@ -79,7 +85,16 @@ void MainScene::setupTouchHandling()
     
     touchListener->onTouchBegan = [&](Touch* touch, Event* event)
     {
-        this->character->jump();
+        switch( this->state ){
+        case GameState::Ready : this->triggerPlaying(); break;
+        case GameState::Playing : this->character->jump(); break;
+        case GameState::GameOver : {
+            auto nextGameScene = MainScene::createScene();
+            auto transition = TransitionFade::create( 1.0f, nextGameScene );
+            Director::getInstance()->replaceScene(transition);
+        }
+        break;
+        }
         return true;
     };
     
@@ -89,24 +104,52 @@ void MainScene::setupTouchHandling()
 
 void MainScene::update(float dt)
 {
-    //障害物の移動
-    for( auto obstacle : this->obstacles ){
-        obstacle->moveLeft( SCROLL_SPEED_X * dt );
-    }
-        
-    //障害物とキャラの衝突判定
     Rect characterRect = this->character->getRect();
-    for( auto obstacle : this->obstacles ){
-        auto obstacleRects = obstacle->getRects();
+    
+    if( this->state == GameState::Playing ){
+        //障害物の移動
+        for( auto obstacle : this->obstacles ){
+            obstacle->moveLeft( SCROLL_SPEED_X * dt );
+        }
         
-        for( Rect obstacleRect : obstacleRects )
-        {
-            if( characterRect.intersectsRect( obstacleRect ) != false )
+        //障害物とキャラの衝突判定
+        for( auto obstacle : this->obstacles ){
+            auto obstacleRects = obstacle->getRects();
+    
+            for( Rect obstacleRect : obstacleRects )
             {
-                  //this->unschedule(CC_SCHEDULE_SELECTOR(HelloWorld::step));
-                this->unscheduleUpdate();
-                this->unscheduleAllCallbacks();
+                if( characterRect.intersectsRect( obstacleRect ) != false )
+                {
+                    this->triggerGameOver();
+                }
             }
+        }
+    }
+    
+    if( this->state == GameState::Playing )
+    {
+        //地面の移動
+        for( auto ground : this->grounds ){
+            ground->setPosition( ground->getPosition() - Vec2( SCROLL_SPEED_X * dt,0) );
+        }
+    
+        if( this->grounds.back()->getPosition().x < 0 )
+        {
+            this->grounds.front()->setPosition( Vec2( this->grounds.back()->getPosition().x + this->grounds.back()->getContentSize().width, 100.0f ) );
+            this->grounds.swap(0, 1);
+        }
+    }
+    
+    //地面とキャラの衝突判定
+    for( auto ground : this->grounds ){
+        Rect groundRect = Rect( ground->getPosition() - Vec2( 0.0f, 100.0f ) , Size( ground->getContentSize().width, 100.0f + characterRect.size.height/2 ) );
+        
+        if( characterRect.intersectsRect( groundRect ) != false )
+        {
+            this->character->setPosition( this->character->getPositionX(), 100.0f + characterRect.size.height );
+            
+            this->triggerGameOver();
+            this->character->stopFly();
         }
     }
     
@@ -126,4 +169,24 @@ void MainScene::createObstacle( float dt )
         this->obstacles.front()->removeFromParent();
         this->obstacles.erase(this->obstacles.begin());
     }
+}
+
+void MainScene::triggerReady()
+{
+    this->state = GameState::Ready;
+}
+
+void MainScene::triggerPlaying()
+{
+    this->state = GameState::Playing;
+    this->character->startFly();
+    
+    this->scheduleUpdate();
+    this->schedule(CC_SCHEDULE_SELECTOR(MainScene::createObstacle), OBSTACLE_TIME_SPAN);
+}
+
+void MainScene::triggerGameOver()
+{
+    this->state = GameState::GameOver;
+    this->unschedule(CC_SCHEDULE_SELECTOR(MainScene::createObstacle));
 }

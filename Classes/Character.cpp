@@ -49,38 +49,54 @@ void Character::onEnter()
 
 void Character::update( float dt )
 {
-    this->velocity += this->accel * dt;
-    
-    if( this->velocity > 0 ){
-        this->accel = GRAVITY_ACCEL * 3.0f;
-    }
-    else
+    if( this->isPlaying != false )
     {
-        this->accel = GRAVITY_ACCEL;
-    }
+        this->velocity += this->accel * dt;
     
-    if( this->velocity < -1.0f * JUMP_SPEED ){
-        this->velocity = -1.0f * JUMP_SPEED;
-    }
+        if( this->velocity > 0 ){
+            this->accel = GRAVITY_ACCEL * 3.0f;
+        }
+        else
+        {
+            this->accel = GRAVITY_ACCEL;
+        }
     
-    this->setPosition( this->getPosition() + Vec2(0, this->velocity * dt) );
+        if( this->velocity < -1.0f * JUMP_SPEED ){
+            this->velocity = -1.0f * JUMP_SPEED;
+        }
+    
+        this->setPosition( this->getPosition() + Vec2(0, this->velocity * dt) );
+    }
 }
 
 void Character::jump()
 {
     this->velocity = JUMP_SPEED;
+    
+    this->stopAllActions();
+    this->runAction( this->timeline );
+    this->timeline->play("fly3", false);
 }
 
 Rect Character::getRect()
 {
     auto spobBt = this->getChildByName<Sprite*>("character");
     
-    //Sprite* sprite = Sprite::create();
-    //sprite->setTextureRect( Rect( spobBt->getPosition(), spobBt->getContentSize() ) );
-    //sprite->setColor(Color3B::WHITE);
-    //this->addChild(sprite);
-    
-    return Rect( this->getPosition(), spobBt->getContentSize() );
+    return Rect( this->getPosition() - spobBt->getContentSize() * 0.5 * 0.5 , spobBt->getContentSize() * 0.5 );
 }
 
+void Character::setIsPlaying(bool bPlay)
+{
+    this->isPlaying = bPlay;
+}
+
+void Character::startFly()
+{
+    this->isPlaying = true;
+}
+
+void Character::stopFly()
+{
+    this->isPlaying = false;
+}
 

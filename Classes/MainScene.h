@@ -11,6 +11,14 @@ class Character;
 class MainScene : public cocos2d::Layer
 {
 public:
+    
+    enum class GameState
+    {
+        Ready,
+        Playing,
+        GameOver,
+    };
+    
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
@@ -21,9 +29,13 @@ public:
     
     void update( float dt ) override;
     
-    void play();
-    void stop();
-
+    //void play();
+    //void stop();
+    
+    void triggerReady();
+    void triggerPlaying();
+    void triggerGameOver();
+    
     // implement the "static create()" method manually
     CREATE_FUNC(MainScene);
     
@@ -32,6 +44,8 @@ private:
     Character* character;
     cocos2d::Vector<Obstacle*> obstacles;
     cocos2d::Node* back;
+    cocos2d::Vector<cocos2d::Sprite*> grounds;
+    GameState state;
     
     void setupTouchHandling();
     void createObstacle( float dt );
