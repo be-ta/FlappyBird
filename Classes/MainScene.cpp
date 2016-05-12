@@ -71,7 +71,6 @@ void MainScene::onEnter()
     this->scheduleUpdate();
     
     this->schedule(CC_SCHEDULE_SELECTOR(MainScene::createObstacle), OBSTACLE_TIME_SPAN);
-    //this->unschedule(CC_SCHEDULE_SELECTOR(HelloWorld::step));
 }
 
 void MainScene::setupTouchHandling()
@@ -90,9 +89,25 @@ void MainScene::setupTouchHandling()
 
 void MainScene::update(float dt)
 {
+    //障害物の移動
     for( auto obstacle : this->obstacles ){
         obstacle->moveLeft( SCROLL_SPEED_X * dt );
     }
+        
+    //障害物とキャラの衝突判定
+    Rect characterRect = this->character->getRect();
+    for( auto obstacle : this->obstacles ){
+        auto obstacleRects = obstacle->getRects();
+        
+        for( Rect obstacleRect : obstacleRects )
+        {
+            if( characterRect.intersectsRect( obstacleRect ) != false )
+            {
+                  //this->unschedule(CC_SCHEDULE_SELECTOR(HelloWorld::step));
+            }
+        }
+    }
+    
 }
 
 void MainScene::createObstacle( float dt )

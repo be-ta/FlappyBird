@@ -44,6 +44,7 @@ void Character::onEnter()
     this->scheduleUpdate();
     
     this->jump();
+    
 }
 
 void Character::update( float dt )
@@ -68,6 +69,18 @@ void Character::update( float dt )
 void Character::jump()
 {
     this->velocity = JUMP_SPEED;
+}
+
+Rect Character::getRect()
+{
+    auto spobBt = this->getChildByName<Sprite*>("character");
+    
+    //Sprite* sprite = Sprite::create();
+    //sprite->setTextureRect( Rect( spobBt->getPosition(), spobBt->getContentSize() ) );
+    //sprite->setColor(Color3B::WHITE);
+    //this->addChild(sprite);
+    
+    return Rect( this->getPosition(), spobBt->getContentSize() );
 }
 
 

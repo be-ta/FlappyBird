@@ -23,6 +23,7 @@ public:
     void update( float dt  ) override;
     void onEnter() override;
     void jump();
+    cocos2d::Rect getRect();
     
 protected:
     

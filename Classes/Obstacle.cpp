@@ -50,3 +50,16 @@ void Obstacle::moveLeft( float distance )
 {
     this->setPosition( this->getPosition() - Vec2(distance,0) );
 }
+
+std::vector<Rect> Obstacle::getRects()
+{
+    std::vector<Rect> obRects;
+    
+    auto spobUp = this->getChildByName<Sprite*>("pipe_top");
+    auto spobBt = this->getChildByName<Sprite*>("pipe_bottom");
+    
+    obRects.push_back(Rect( this->getPosition() + Vec2( -spobUp->getContentSize().width/2, 50 ), spobUp->getContentSize()));
+    obRects.push_back(Rect( this->getPosition() + Vec2( -spobUp->getContentSize().width/2, -50 -spobUp->getContentSize().height ), spobBt->getContentSize()));
+    
+    return obRects;
+}
