@@ -107,36 +107,35 @@ void MainScene::update(float dt)
     Rect characterRect = this->character->getRect();
     
     if( this->state == GameState::Playing ){
+        
         //障害物の移動
         for( auto obstacle : this->obstacles ){
             obstacle->moveLeft( SCROLL_SPEED_X * dt );
         }
         
-        //障害物とキャラの衝突判定
-        for( auto obstacle : this->obstacles ){
-            auto obstacleRects = obstacle->getRects();
-    
-            for( Rect obstacleRect : obstacleRects )
-            {
-                if( characterRect.intersectsRect( obstacleRect ) != false )
-                {
-                    this->triggerGameOver();
-                }
-            }
-        }
-    }
-    
-    if( this->state == GameState::Playing )
-    {
         //地面の移動
         for( auto ground : this->grounds ){
             ground->setPosition( ground->getPosition() - Vec2( SCROLL_SPEED_X * dt,0) );
         }
-    
+        
         if( this->grounds.back()->getPosition().x < 0 )
         {
             this->grounds.front()->setPosition( Vec2( this->grounds.back()->getPosition().x + this->grounds.back()->getContentSize().width, 100.0f ) );
             this->grounds.swap(0, 1);
+        }
+        
+    }
+    
+    //障害物とキャラの衝突判定
+    for( auto obstacle : this->obstacles ){
+        auto obstacleRects = obstacle->getRects();
+        
+        for( Rect obstacleRect : obstacleRects )
+        {
+            if( characterRect.intersectsRect( obstacleRect ) != false )
+            {
+                this->triggerGameOver();
+            }
         }
     }
     
